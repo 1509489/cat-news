@@ -1,0 +1,2 @@
+rootProject.name = "Sky Cat News"
+include ':app'
