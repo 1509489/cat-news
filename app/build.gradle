@@ -25,6 +25,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        mock {
+            dimension "app"
+        }
+        prod {
+            dimension "app"
+            buildConfigField "String", "BASE_URL", "\"https://someurl.com\""
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -35,11 +48,22 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        mock {
+            java {
+                srcDirs 'src\\mock\\java'
+            }
+            res {
+                srcDirs 'src\\mock\\res'
+            }
+        }
+    }
 }
 
 dependencies {
     def lifecycle_version = "2.3.1"
     def retrofit_version = "2.9.0"
+    def okhttp_version = "4.9.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -57,10 +81,10 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.okhttp3:okhttp:4.9.0"
-    implementation "com.squareup.okhttp3:logging-interceptor"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
-    testImplementation "com.squareup.okhttp3:mockwebserver:4.9.0"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
