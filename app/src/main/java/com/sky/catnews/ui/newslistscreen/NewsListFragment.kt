@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.sky.catnews.databinding.FragmentNewsListBinding
 import com.sky.catnews.network.NetworkResource
+import com.sky.catnews.ui.adapters.NewsListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,7 @@ class NewsListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: NewsListViewModel by viewModels()
 
+    private lateinit var newsListAdapter: NewsListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +49,14 @@ class NewsListFragment : Fragment() {
                 is NetworkResource.Loading -> {
                 }
                 is NetworkResource.Success -> networkResource.data?.let { newsDto ->
+                    newsListAdapter.apply {
+                        submitList(newsDto.newsData)
+                        binding.rvNewsList.adapter = this
+                        itemViewClickListener = { data ->
+                            Toast.makeText(requireContext(), data.headline, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
                 }
                 is NetworkResource.Error -> {
 
