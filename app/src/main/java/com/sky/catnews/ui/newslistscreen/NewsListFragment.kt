@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.sky.catnews.databinding.FragmentNewsListBinding
 import com.sky.catnews.network.NetworkResource
 import com.sky.catnews.ui.adapters.NewsListAdapter
@@ -21,8 +21,6 @@ class NewsListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: NewsListViewModel by viewModels()
 
-    private lateinit var newsListAdapter: NewsListAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +32,6 @@ class NewsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        newsListAdapter = NewsListAdapter()
         observeNewsList()
     }
 
@@ -46,12 +43,22 @@ class NewsListFragment : Fragment() {
     private fun observeNewsList() {
         viewModel.fetchNews().observe(viewLifecycleOwner, Observer { networkResource ->
             when (networkResource) {
-                is NetworkResource.Loading -> {
+                is NetworkResource.Loading -> binding.apply {
+                    incError.llError.visibility = View.GONE
+                    rvNewsList.visibility = View.GONE
+                    pbLoading.visibility = View.VISIBLE
                 }
                 is NetworkResource.Success -> networkResource.data?.let { newsDto ->
+                    val newsListAdapter = NewsListAdapter()
+
+                    binding.apply {
+                        tvTitle.text = newsDto.title
+                        binding.rvNewsList.visibility = View.VISIBLE
+                        binding.pbLoading.visibility = View.GONE
+                        rvNewsList.adapter = newsListAdapter
+                    }
                     newsListAdapter.apply {
                         submitList(newsDto.newsData)
-                        binding.rvNewsList.adapter = this
                         itemViewClickListener = { data ->
                             val destination = NewsListFragmentDirections
                                 .actionNewsListFragmentToNewsStoryFragment(data.id)
@@ -59,8 +66,13 @@ class NewsListFragment : Fragment() {
                         }
                     }
                 }
-                is NetworkResource.Error -> {
-
+                is NetworkResource.Error -> binding.apply {
+                    rvNewsList.visibility = View.GONE
+                    pbLoading.visibility = View.GONE
+                    incError.apply {
+                        llError.visibility = View.VISIBLE
+                        btnTryAgain.setOnClickListener { observeNewsList() }
+                    }
                 }
             }
         })

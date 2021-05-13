@@ -7,6 +7,7 @@ import com.sky.catnews.R
 import com.sky.catnews.models.News
 import com.sky.catnews.models.NewsStory
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import retrofit2.Response
 import java.io.IOException
 import java.io.InputStream
@@ -21,6 +22,8 @@ class MockNetworkService @Inject constructor(
             News::class.java,
             loadJSONFromResource(R.raw.sample_list)
         )
+        // A delay to simulate network call
+        delay(2000L)
         return Response.success(mockNewsResponse)
     }
 
@@ -29,6 +32,8 @@ class MockNetworkService @Inject constructor(
             NewsStory::class.java,
             loadJSONFromResource(R.raw.sample_story1)
         )
+        // A delay to simulate network call
+        delay(2000L)
         return Response.success(mockStoryResponse)
     }
 
