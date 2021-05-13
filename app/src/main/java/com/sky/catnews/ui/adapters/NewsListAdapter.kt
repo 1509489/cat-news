@@ -77,7 +77,7 @@ class NewsListAdapter : ListAdapter<NewsDataDto, RecyclerView.ViewHolder>(DIFF_C
         }
     }
 
-    class StoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class StoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val storyImage: ImageView = itemView.findViewById(R.id.ivStoryImage)
         private val headlineText: TextView = itemView.findViewById(R.id.tvHeadline)
         private val teaserText: TextView = itemView.findViewById(R.id.tvTeaserText)
@@ -100,7 +100,7 @@ class NewsListAdapter : ListAdapter<NewsDataDto, RecyclerView.ViewHolder>(DIFF_C
         }
     }
 
-    class AdvertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class AdvertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val advertText: TextView = itemView.findViewById(R.id.tvAdvert)
 
         fun bind(data: NewsDataDto) {
