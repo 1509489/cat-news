@@ -10,10 +10,10 @@ data class NewsStory(
 )
 
 data class StoryContent(
-    val accessibilityText: String,
-    val text: String,
+    val accessibilityText: String?,
+    val text: String?,
     val type: String,
-    val url: String
+    val url: String?
 )
 
 data class HeroImage(

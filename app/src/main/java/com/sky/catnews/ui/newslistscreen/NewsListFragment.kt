@@ -53,8 +53,9 @@ class NewsListFragment : Fragment() {
                         submitList(newsDto.newsData)
                         binding.rvNewsList.adapter = this
                         itemViewClickListener = { data ->
-                            Toast.makeText(requireContext(), data.headline, Toast.LENGTH_SHORT)
-                                .show()
+                            val destination = NewsListFragmentDirections
+                                .actionNewsListFragmentToNewsStoryFragment(data.id)
+                            findNavController().navigate(destination)
                         }
                     }
                 }

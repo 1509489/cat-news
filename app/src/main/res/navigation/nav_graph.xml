@@ -3,26 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/newsListFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/newsListFragment"
         android:name="com.sky.catnews.ui.newslistscreen.NewsListFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/news_list_fragment_label"
         tools:layout="@layout/fragment_news_list">
-
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_newsListFragment_to_newsStoryFragment"
+            app:destination="@id/newsStoryFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/newsStoryFragment"
         android:name="com.sky.catnews.ui.storyscreen.StoryFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/story_fragment_label"
         tools:layout="@layout/fragment_story">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+        <argument
+            android:name="storyId"
+            app:argType="string" />
     </fragment>
 </navigation>

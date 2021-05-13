@@ -71,10 +71,10 @@ fun HeroImage.toHeroImageDto(): HeroImageDto {
 fun List<StoryContent>.toStoryContentDto(): List<StoryContentDto> {
     return map { content ->
         StoryContentDto(
-            accessibilityText = content.accessibilityText,
-            text = content.text,
+            accessibilityText = content.accessibilityText.orEmpty(),
+            text = content.text.orEmpty(),
             type = content.type,
-            url = content.url
+            url = content.url.orEmpty()
         )
     }
 }
